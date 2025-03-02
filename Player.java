@@ -46,7 +46,7 @@ public class Player {
         for (int j = this.numberOfTiles; j > index; j--) {
             playerTiles[j] = playerTiles[j - 1];
         }
-    
+     
         playerTiles[index] = t;
         numberOfTiles ++; 
     }
