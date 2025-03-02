@@ -1,4 +1,4 @@
-public class Tile {
+public class Tile implements Comparable {
     
     int value;
     char color;
@@ -17,18 +17,20 @@ public class Tile {
     /*
      * Compares tiles so that they can be added to the hands in order
      */
-    public int compareTo(Tile t) {
-        if(colorNameToInt() < t.colorNameToInt()) {
+    @Override
+    public int compareTo(Object t) {
+        Tile other = (Tile)t;
+        if(colorNameToInt() < other.colorNameToInt()) {
             return -1;
         }
-        else if(colorNameToInt() > t.colorNameToInt()) {
+        else if(colorNameToInt() > other.colorNameToInt()) {
             return 1;
         }
         else{
-             if(getValue() < t.getValue()) {
+             if(getValue() < other.getValue()) {
                 return -1;
             }
-            else if(getValue() > t.getValue()) {
+            else if(getValue() > other.getValue()) {
                 return 1;
             }
             else{
@@ -64,8 +66,13 @@ public class Tile {
 
     }
 
+    @Override
     public String toString() {
         return "" + value + color;
+    }
+
+    public boolean equals(Tile other){
+        return this.toString().equals(other.toString());
     }
 
     public int getValue() {
