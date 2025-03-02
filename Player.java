@@ -12,7 +12,7 @@ public class Player {
     }
 
     /*
-     * TODO: removes and returns the tile in given index
+     * DONE: removes the tile in the given index by making all elements greater than the given index move 1 index to the left
      */
     public Tile getAndRemoveTile(int index) {
         Tile tile = playerTiles[index];
@@ -28,9 +28,7 @@ public class Player {
     }
 
     /*
-     * TODO: adds the given tile to the playerTiles in order
-     * should also update numberOfTiles accordingly.
-     * make sure playerTiles are not more than 15 at any time
+     * DONE: adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
      */
     public void addTile(Tile t) {
         if (this.numberOfTiles < 15) {
@@ -40,10 +38,11 @@ public class Player {
     }
 
     /*
-     * TODO: checks if this player's hand satisfies the winning condition
-     * to win this player should have 3 chains of length 4, extra tiles
-     * does not disturb the winning condition
-     * @return
+     * CHECK THIS METHOD AGAIN
+     * DONE: This method works for chains of length 4 as after sorting the array it only checks the 3 tiles after that tile
+     * if we have ...4-4-4-4-4... it should count the first four 4s as a chain and not the last 4. By the game logic the player 
+     * should only have chains of length 4 since there cant be tiles of same color in the same chain. It returns chainsOfFour == 3 and not
+     * chainsOfFour >= 3 since there cannot be more than 3 chains. If the player is winning there should be 3 chains of length 4 and 2 extra tiles
      */
     public boolean isWinningHand() {
         int chainsOfFour = 0;
