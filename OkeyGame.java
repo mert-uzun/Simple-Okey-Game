@@ -6,6 +6,7 @@ public class OkeyGame {
     Tile[] tiles;
 
     Tile lastDiscardedTile;
+    int currentTileIndex = 0;
 
     int currentPlayerIndex = 0;
 
@@ -34,18 +35,48 @@ public class OkeyGame {
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
      */
-    public void distributeTilesToPlayers() {
+    public void distributeTilesToPlayers() 
+    {
+        {
+            int index = 0;
+            for (int i = 0; i < 15; i++) 
+            {
+                players[0].addTile(tiles[index]);
+                index++;
+            }
+            
+            for (int j = 1; j < players.length; j++) 
+            {
+                for (int i = 0; i < 14; i++) 
+                {
+                    players[j].addTile(tiles[index]);
+                    index++;
+                }
+            }
+            currentTileIndex = index;
+        }
 
     }
 
     /*
-     * TODO: get the last discarded tile for the current player
+     * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
-    public String getLastDiscardedTile() {
-        return null;
-    }
+    public String getLastDiscardedTile() 
+    {
+
+            if (lastDiscardedTile != null) 
+            {
+                String tileString = lastDiscardedTile.toString();
+ 
+                lastDiscardedTile = null; //clears memory each time when a tile picked by the player 
+                return tileString;
+            }
+            return ("No tile discarded yet.");
+        }
+
+ 
 
     /*
      * TODO: get the top tile from tiles array for the current player
