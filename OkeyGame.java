@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Random;
 
 public class OkeyGame {
@@ -7,7 +6,6 @@ public class OkeyGame {
     Tile[] tiles;
 
     Tile lastDiscardedTile;
-    int currentTileIndex = 0;
 
     int currentPlayerIndex = 0;
 
@@ -30,60 +28,55 @@ public class OkeyGame {
         }
     }
 
+   
     /*
-     * TODO: distributes the starting tiles to the players
+     * DONE: distributes the starting tiles to the players
      * player at index 0 gets 15 tiles and starts first
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
      */
-    public void distributeTilesToPlayers() 
-    {
-        {
-            int index = 0;
-            for (int i = 0; i < 15; i++) 
-            {
-                players[0].addTile(tiles[index]);
-                index++;
-            }
-            
-            for (int j = 1; j < players.length; j++) 
-            {
-                for (int i = 0; i < 14; i++) 
-                {
-                    players[j].addTile(tiles[index]);
-                    index++;
-                }
-            }
-            currentTileIndex = index;
-        }
-
-    }
+     //Utku
+     public void distributeTilesToPlayers() //first player gets 15, others get 14 tiles
+     {
+         for (int i = 0; i < 4; i++) 
+         {
+             int numTiles;
+             
+             if (i == 0) 
+             {
+                 numTiles = 15;
+             } 
+             
+             else 
+             {
+                 numTiles = 14;
+             }
+ 
+             for (int j = 0; j < numTiles; j++) 
+             {
+                 players[i].addTile(tiles[tileIndex]); 
+                 tileIndex++; 
+             }
+         }
+     }
+ 
 
     /*
      * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
-    public String getLastDiscardedTile() 
-    {
+   //Utku
+   public String getLastDiscardedTile() 
+   {
+       if (lastDiscardedTile == null)//in the beginning last discarded tile is null
+       {
+           return "No tile has been discarded yet."; // Message will only be displayed in the beginning
+       }
+       return lastDiscardedTile.toString();
+   }
 
-            if (lastDiscardedTile != null) 
-            {
-                String tileString = lastDiscardedTile.toString();
- 
-                lastDiscardedTile = null; //clears memory each time when a tile picked by the player 
-                return tileString;
-            }
-            return ("No tile discarded yet.");
-        }
-
- 
-
-    /*
-     * TODO: get the top tile from tiles array for the current player
-     * that tile is no longer in the tiles array (this simulates picking up the top tile)
-     * it should return the toString method of the tile so that we can print what we picked
-     */
+    // son indexe koy
     public String getTopTile() {
         return null;
     }
@@ -101,16 +94,9 @@ public class OkeyGame {
             tiles[secondIndex] = temp;
         }
     }
-    
-    // Done by Ali : Sorts all players' hands.
-    public void sortTiles() {
-        for (int i = 0 ; i < players.length ; i++){
-            Arrays.sort(players[i].getTiles());
-        }
-    }
 
     /*
-     * Done by Ali: check if game still continues, should return true if current player
+     * TODO: check if game still continues, should return true if current player
      * finished the game, use isWinningHand() method of Player to decide
      */
     public boolean didGameFinish() {
@@ -135,7 +121,60 @@ public class OkeyGame {
      * the single tiles and tiles that contribute to the smallest chains.
      */
     public void discardTileForComputer() {
+        Random random = new Random();
+        int index = getCurrentPlayerIndex();
+        Tile[] handOfPlayer = players[index].getTiles();
 
+        //First, look for duplicates, makes discarded index null
+        for(int i = 0; i < handOfPlayer.length; i++){
+            Tile currentTile = handOfPlayer[i];
+            for(int j = i + 1; j < handOfPlayer.length; j++){
+                Tile toBeCompared = handOfPlayer[j];
+                if (currentTile.equals(toBeCompared)) {
+                    handOfPlayer[i] = null;
+                    return;
+                }
+            }
+        }
+
+        //Secondly, look for tiles without any pairs
+        for(int i = 0; i < handOfPlayer.length; i++){
+            Tile currentTile = handOfPlayer[i];
+            int countForPairables = 0;
+            for(int j = 0; j < handOfPlayer.length; j++){
+                Tile toBeCompared = handOfPlayer[j];
+                if (currentTile.canFormChainWith(toBeCompared)) {
+                    countForPairables++;
+                }
+            }
+
+            //If current tile cannot be matched with any other, discard it
+            if (countForPairables == 0) {
+                handOfPlayer[i] = null;
+                return;
+            }
+        }
+
+        //Otherwise look for tiles with only one pairs
+        for(int i = 0; i < handOfPlayer.length; i++){
+            Tile currentTile = handOfPlayer[i];
+            int countForPairables = 0;
+            for(int j = 0; j < handOfPlayer.length; j++){
+                Tile toBeCompared = handOfPlayer[j];
+                if (currentTile.canFormChainWith(toBeCompared)) {
+                    countForPairables++;
+                }
+            }
+
+            //If current tile cannot be matched with any other, discard it
+            if (countForPairables == 1) {
+                handOfPlayer[i] = null;
+                return;
+            }
+        }
+
+        //If none of above works, discard a random tile
+        handOfPlayer[random.nextInt(handOfPlayer.length)] = null;
     }
 
     /*
@@ -144,7 +183,7 @@ public class OkeyGame {
      * that player's tiles
      */
     public void discardTile(int tileIndex) {
-
+        
     }
 
     public void displayDiscardInformation() {
@@ -155,7 +194,7 @@ public class OkeyGame {
 
     public void displayCurrentPlayersTiles() {
         players[currentPlayerIndex].displayTiles();
-    }
+    } 
 
     public int getCurrentPlayerIndex() {
         return currentPlayerIndex;
@@ -174,5 +213,4 @@ public class OkeyGame {
             players[index] = new Player(name);
         }
     }
-
 }

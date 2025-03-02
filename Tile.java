@@ -64,8 +64,13 @@ public class Tile {
 
     }
 
+    @Override
     public String toString() {
         return "" + value + color;
+    }
+
+    public boolean equals(Tile other){
+        return this.toString().equals(other.toString());
     }
 
     public int getValue() {
