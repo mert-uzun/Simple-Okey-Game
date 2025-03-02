@@ -7,6 +7,7 @@ public class OkeyGame {
     Tile[] tiles;
 
     Tile lastDiscardedTile;
+    int currentTileIndex;
 
     int currentPlayerIndex = 0;
 
