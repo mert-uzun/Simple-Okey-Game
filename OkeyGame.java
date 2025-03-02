@@ -28,30 +28,54 @@ public class OkeyGame {
         }
     }
 
+   
     /*
-     * TODO: distributes the starting tiles to the players
+     * DONE: distributes the starting tiles to the players
      * player at index 0 gets 15 tiles and starts first
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
      */
-    public void distributeTilesToPlayers() {
-
-    }
+     //Utku
+     public void distributeTilesToPlayers() //first player gets 15, others get 14 tiles
+     {
+         for (int i = 0; i < 4; i++) 
+         {
+             int numTiles;
+             
+             if (i == 0) 
+             {
+                 numTiles = 15;
+             } 
+             
+             else 
+             {
+                 numTiles = 14;
+             }
+ 
+             for (int j = 0; j < numTiles; j++) 
+             {
+                 players[i].addTile(tiles[tileIndex]); 
+                 tileIndex++; 
+             }
+         }
+     }
+ 
 
     /*
-     * TODO: get the last discarded tile for the current player
+     * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
-    public String getLastDiscardedTile() {
-        return null;
-    }
+   //Utku
+   public String getLastDiscardedTile() 
+   {
+       if (lastDiscardedTile == null)//in the beginning last discarded tile is null
+       {
+           return "No tile has been discarded yet."; // Message will only be displayed in the beginning
+       }
+       return lastDiscardedTile.toString();
+   }
 
-    /*
-     * TODO: get the top tile from tiles array for the current player
-     * that tile is no longer in the tiles array (this simulates picking up the top tile)
-     * it should return the toString method of the tile so that we can print what we picked
-     */
     public String getTopTile() {
         return null;
     }
