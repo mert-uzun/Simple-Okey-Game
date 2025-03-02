@@ -6,6 +6,7 @@ public class OkeyGame {
     Tile[] tiles;
 
     Tile lastDiscardedTile;
+    int currentTileIndex = 0;
 
     int currentPlayerIndex = 0;
 
@@ -28,54 +29,60 @@ public class OkeyGame {
         }
     }
 
-   
     /*
-     * DONE: distributes the starting tiles to the players
+     * TODO: distributes the starting tiles to the players
      * player at index 0 gets 15 tiles and starts first
      * other players get 14 tiles
      * this method assumes the tiles are already shuffled
      */
-     //Utku
-     public void distributeTilesToPlayers() //first player gets 15, others get 14 tiles
-     {
-         for (int i = 0; i < 4; i++) 
-         {
-             int numTiles;
-             
-             if (i == 0) 
-             {
-                 numTiles = 15;
-             } 
-             
-             else 
-             {
-                 numTiles = 14;
-             }
- 
-             for (int j = 0; j < numTiles; j++) 
-             {
-                 players[i].addTile(tiles[tileIndex]); 
-                 tileIndex++; 
-             }
-         }
-     }
- 
+    public void distributeTilesToPlayers() 
+    {
+        {
+            int index = 0;
+            for (int i = 0; i < 15; i++) 
+            {
+                players[0].addTile(tiles[index]);
+                index++;
+            }
+            
+            for (int j = 1; j < players.length; j++) 
+            {
+                for (int i = 0; i < 14; i++) 
+                {
+                    players[j].addTile(tiles[index]);
+                    index++;
+                }
+            }
+            currentTileIndex = index;
+        }
+
+    }
 
     /*
      * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
-   //Utku
-   public String getLastDiscardedTile() 
-   {
-       if (lastDiscardedTile == null)//in the beginning last discarded tile is null
-       {
-           return "No tile has been discarded yet."; // Message will only be displayed in the beginning
-       }
-       return lastDiscardedTile.toString();
-   }
+    public String getLastDiscardedTile() 
+    {
 
+            if (lastDiscardedTile != null) 
+            {
+                String tileString = lastDiscardedTile.toString();
+ 
+                lastDiscardedTile = null; //clears memory each time when a tile picked by the player 
+                return tileString;
+            }
+            return ("No tile discarded yet.");
+        }
+
+ 
+
+    /*
+     * TODO: get the top tile from tiles array for the current player
+     * that tile is no longer in the tiles array (this simulates picking up the top tile)
+     * it should return the toString method of the tile so that we can print what we picked
+     */
     public String getTopTile() {
         return null;
     }
