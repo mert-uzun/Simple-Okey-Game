@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class OkeyGame {
@@ -114,16 +115,17 @@ public class OkeyGame {
 
     }
 
-    /*
-     * TODO: Current computer player will discard the least useful tile.
-     * this method should print what tile is discarded since it should be
-     * known by other players. You may first discard duplicates and then
-     * the single tiles and tiles that contribute to the smallest chains.
+    /**
+     * Current computer player will discard the least useful tile.
+     * Prints what tile is discarded to make other players aware of this action.
+     * First looks for tiles with duplicates and if there is any, discards it.
+     * Secondly, looks for a tile with minimum matchables, if there is a tile such as this, discards it.
      */
     public void discardTileForComputer() {
         Random random = new Random();
         int index = getCurrentPlayerIndex();
-        Tile[] handOfPlayer = players[index].getTiles();
+        Player currentPlayer = players[index];
+        Tile[] handOfPlayer = currentPlayer.getTiles();
 
         //First, look for duplicates, makes discarded index null
         for(int i = 0; i < handOfPlayer.length; i++){
@@ -131,50 +133,57 @@ public class OkeyGame {
             for(int j = i + 1; j < handOfPlayer.length; j++){
                 Tile toBeCompared = handOfPlayer[j];
                 if (currentTile.equals(toBeCompared)) {
+                    System.out.println(currentPlayer + " discards " + currentTile + " from its hand.");
                     handOfPlayer[i] = null;
+                    sortTilesWithNullAtLastIndex(handOfPlayer);
                     return;
                 }
             }
         }
 
-        //Secondly, look for tiles without any pairs
-        for(int i = 0; i < handOfPlayer.length; i++){
-            Tile currentTile = handOfPlayer[i];
-            int countForPairables = 0;
-            for(int j = 0; j < handOfPlayer.length; j++){
-                Tile toBeCompared = handOfPlayer[j];
-                if (currentTile.canFormChainWith(toBeCompared)) {
-                    countForPairables++;
+        //Secondly, look for tiles without minimum pairs
+        for(int x = 0; x < 4; x++){
+            for(int i = 0; i < handOfPlayer.length; i++){
+                Tile currentTile = handOfPlayer[i];
+                int countForPairables = 0;
+                for(int j = 0; j < handOfPlayer.length; j++){
+                    Tile toBeCompared = handOfPlayer[j];
+                    if (currentTile.canFormChainWith(toBeCompared)) {
+                        countForPairables++;
+                    }
+                }
+    
+                //If current tile has minimum matches with any other, discard it
+                if (countForPairables == x) {
+                    System.out.println(currentPlayer + " discards " + currentTile + " from its hand.");
+                    handOfPlayer[i] = null;
+                    sortTilesWithNullAtLastIndex(handOfPlayer);
+                    return;
                 }
             }
+        }
+    }
 
-            //If current tile cannot be matched with any other, discard it
-            if (countForPairables == 0) {
-                handOfPlayer[i] = null;
-                return;
+    /**
+     * Sorts the tiles array based on compareTo method in Tile class, in a way to put null at last index
+     * @param tiles tiles array to be sorted
+     */
+    public void sortTilesWithNullAtLastIndex(Tile[] tiles){
+        int nullIndex = -1;
+
+        for(int i = 0; i < tiles.length; i++){
+            if (tiles[i] == null) {
+                nullIndex = i;
+                break;
             }
         }
 
-        //Otherwise look for tiles with only one pairs
-        for(int i = 0; i < handOfPlayer.length; i++){
-            Tile currentTile = handOfPlayer[i];
-            int countForPairables = 0;
-            for(int j = 0; j < handOfPlayer.length; j++){
-                Tile toBeCompared = handOfPlayer[j];
-                if (currentTile.canFormChainWith(toBeCompared)) {
-                    countForPairables++;
-                }
-            }
-
-            //If current tile cannot be matched with any other, discard it
-            if (countForPairables == 1) {
-                handOfPlayer[i] = null;
-                return;
-            }
+        if (nullIndex != -1 && nullIndex != 14) {
+            tiles[nullIndex] = tiles[14];
+            tiles[14] = null;
         }
 
-        //If none of above works, discard a random tile
-        handOfPlayer[random.nextInt(handOfPlayer.length)] = null;
+        Arrays.sort(tiles, 0, 14);
     }
 
     /*
