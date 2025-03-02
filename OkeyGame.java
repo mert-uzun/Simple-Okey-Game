@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 
 public class OkeyGame {
@@ -100,9 +101,16 @@ public class OkeyGame {
             tiles[secondIndex] = temp;
         }
     }
+    
+    // Done by Ali : Sorts all players' hands.
+    public void sortTiles() {
+        for (int i = 0 ; i < players.length ; i++){
+            Arrays.sort(players[i].getTiles());
+        }
+    }
 
     /*
-     * TODO: check if game still continues, should return true if current player
+     * Done by Ali: check if game still continues, should return true if current player
      * finished the game, use isWinningHand() method of Player to decide
      */
     public boolean didGameFinish() {

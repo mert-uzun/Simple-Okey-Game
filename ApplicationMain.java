@@ -17,6 +17,12 @@ public class ApplicationMain {
         game.createTiles();
         game.shuffleTiles();
         game.distributeTilesToPlayers();
+        game.distributeTilesToPlayers();
+        /*
+        * Done by Ali: Keeping the players' hands sorted helps checking for winning and discarding easily.
+        * Also a better display.
+         */ 
+        game.sortTiles();
 
         // developer mode is used for seeing the computer players hands, to be used for debugging
         System.out.print("Play in developer's mode with other player's tiles visible? (Y/N): ");
@@ -76,7 +82,7 @@ public class ApplicationMain {
                     // if game continues we need to discard a tile using the given index by the player
                     System.out.println("Which tile you will discard?");
 
-                    // TODO: make sure the given index is correct, should be 0 <= index <= 14
+                    // Done by Ali: make sure the given index is correct, should be 0 <= index <= 14
                     boolean correctIndex;
                     do{
                         System.out.print("Discard the tile in index: ");
