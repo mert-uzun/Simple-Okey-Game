@@ -37,7 +37,7 @@ public class Player {
         int index = this.numberOfTiles; // if there is no tiles with the value of t, t is added to the end of the array.
     
         for (int i = 0; i < numberOfTiles; i++) {
-            if (t.getValue() == playerTiles[i].getValue()) {
+            if (t.getValue() <= playerTiles[i].getValue()) {
                 index = i;
                 break;
             }
