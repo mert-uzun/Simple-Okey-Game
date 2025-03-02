@@ -20,17 +20,17 @@ public class Tile implements Comparable {
     @Override
     public int compareTo(Object t) {
         Tile other = (Tile)t;
-        if(colorNameToInt() < other.colorNameToInt()) {
+        if(getValue() < other.getValue()) {
             return -1;
         }
-        else if(colorNameToInt() > other.colorNameToInt()) {
+        else if(getValue() > other.getValue()) {
             return 1;
         }
         else{
-             if(getValue() < other.getValue()) {
+             if(colorNameToInt() < other.colorNameToInt()) {
                 return -1;
             }
-            else if(getValue() > other.getValue()) {
+            else if(colorNameToInt() > other.colorNameToInt()) {
                 return 1;
             }
             else{

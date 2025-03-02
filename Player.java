@@ -28,7 +28,7 @@ public class Player {
     }
 
     /*
-     * DONE: adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
+     * DONE by Elif and Ali: adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
      * the method finds the index the tile should be inserted without sorting the array. 
      * it finds the index it should be inserted to and shifts all elements greater than the index to the right by 1
      */
@@ -36,15 +36,16 @@ public class Player {
         if (this.numberOfTiles >= 15) return; //if the player has 15 or more tiles return
         int index = this.numberOfTiles; // if there is no tiles with the value of t, t is added to the end of the array.
     
-        for (int i = 0; i < numberOfTiles; i++) {
-            if (t.getValue() <= playerTiles[i].getValue()) {
-                index = i;
-                break;
+        if (index > 0){
+            for (int i = 0; i < numberOfTiles; i++) {
+                if (t.compareTo(tiles[i]) < 1) {
+                    index = i;
+                    break;
+                }
             }
-        }
-    
-        for (int j = this.numberOfTiles; j > index; j--) {
-            playerTiles[j] = playerTiles[j - 1];
+            for (int j = this.numberOfTiles ; j > index; j--) {
+                playerTiles[j] = playerTiles[j - 1];
+            }
         }
      
         playerTiles[index] = t;

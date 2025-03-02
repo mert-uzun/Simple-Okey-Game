@@ -18,12 +18,7 @@ public class ApplicationMain {
         game.shuffleTiles();
         game.distributeTilesToPlayers();
         game.distributeTilesToPlayers();
-        /*
-        * Done by Ali: Keeping the players' hands sorted helps checking for winning and discarding easily.
-        * Also a better display.
-         */ 
-        game.sortTiles();
-
+        
         // developer mode is used for seeing the computer players hands, to be used for debugging
         System.out.print("Play in developer's mode with other player's tiles visible? (Y/N): ");
         char devMode = sc.next().charAt(0);
