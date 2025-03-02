@@ -29,14 +29,28 @@ public class Player {
 
     /*
      * DONE: adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
+     * the method finds the index the tile should be inserted without sorting the array. 
+     * it finds the index it should be inserted to and shifts all elements greater than the index to the right by 1
      */
     public void addTile(Tile t) {
-        if (this.numberOfTiles < 15) {
-            this.playerTiles[numberOfTiles] = t;
-            numberOfTiles++;
-            Arrays.sort(this.playerTiles);
+        if (this.numberOfTiles >= 15) return; //if the player has 15 or more tiles return
+        int index = this.numberOfTiles; // if there is no tiles with the value of t, t is added to the end of the array.
+    
+        for (int i = 0; i < numberOfTiles; i++) {
+            if (t.getValue() <= playerTiles[i].getValue()) {
+                index = i;
+                break;
+            }
         }
+    
+        for (int j = this.numberOfTiles; j > index; j--) {
+            playerTiles[j] = playerTiles[j - 1];
+        }
+     
+        playerTiles[index] = t;
+        numberOfTiles ++; 
     }
+    
 
     /*
      * CHECK THIS METHOD AGAIN
@@ -45,12 +59,15 @@ public class Player {
      * should only have chains of length 4 since there cant be tiles of same color in the same chain. It returns chainsOfFour == 3 and not
      * chainsOfFour >= 3 since there cannot be more than 3 chains. If the player is winning there should be 3 chains of length 4 and 2 extra tiles
      */
-    public boolean isWinningHand() {
+     public boolean isWinningHand() {
         int chainsOfFour = 0;
+        Tile[] tilesCopy = this.playerTiles.clone();
+        Arrays.sort(tilesCopy);
+
         for (int i = 0; i < numberOfTiles - 3; i++) {
-            if (this.playerTiles[i].canFormChainWith(this.playerTiles[i + 1]) &&
-                this.playerTiles[i + 1].canFormChainWith(this.playerTiles[i + 2]) &&
-                this.playerTiles[i + 2].canFormChainWith(this.playerTiles[i + 3])) {
+            if (tilesCopy[i].canFormChainWith(tilesCopy[i + 1]) &&
+                tilesCopy[i + 1].canFormChainWith(tilesCopy[i + 2]) &&
+                tilesCopy[i + 2].canFormChainWith(tilesCopy[i + 3])) {
                 chainsOfFour++;
                 i += 3; 
             }
@@ -59,7 +76,6 @@ public class Player {
         return chainsOfFour == 3; // the player can have 14 tiles at most. 3 chains of 4 tiles each = 12 tiles. 
         //the player cannot have more than 3 chains of 4 tiles each. it is not necessary to check for extra tiles or extra chains
     }
-
 
     public int findPositionOfTile(Tile t) {
         int tilePosition = -1;
