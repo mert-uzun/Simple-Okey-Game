@@ -79,15 +79,15 @@ public class ApplicationMain {
                     // TODO: make sure the given index is correct, should be 0 <= index <= 14
                     boolean correctIndex;
                     do{
-                    System.out.print("Discard the tile in index: ");
-                    playerChoice = sc.nextInt();
-                    if (playerChoice < 0 || playerChoice > 14){
-                        correctIndex = false ;
-                        System.out.println("This is not a valid index. Try again!");
-                    }
-                    else {
-                        correctIndex = true ;
-                    }
+                        System.out.print("Discard the tile in index: ");
+                        playerChoice = sc.nextInt();
+                        if (playerChoice < 0 || playerChoice > 14){
+                            correctIndex = false ;
+                            System.out.println("This is not a valid index. Try again!");
+                        }
+                        else {
+                            correctIndex = true ;
+                        }
                     } while (!correctIndex) ;
                     
                     game.discardTile(playerChoice);
