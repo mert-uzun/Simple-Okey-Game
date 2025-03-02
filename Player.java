@@ -34,6 +34,7 @@ public class Player {
         if (this.numberOfTiles < 15) {
             this.playerTiles[numberOfTiles] = t;
             numberOfTiles++;
+            Arrays.sort(this.playerTiles);
         }
     }
 
@@ -46,13 +47,10 @@ public class Player {
      */
     public boolean isWinningHand() {
         int chainsOfFour = 0;
-        Tile[] tilesCopy = this.playerTiles.clone();
-        Arrays.sort(tilesCopy);
-
         for (int i = 0; i < numberOfTiles - 3; i++) {
-            if (tilesCopy[i].canFormChainWith(tilesCopy[i + 1]) &&
-                tilesCopy[i + 1].canFormChainWith(tilesCopy[i + 2]) &&
-                tilesCopy[i + 2].canFormChainWith(tilesCopy[i + 3])) {
+            if (this.playerTiles[i].canFormChainWith(this.playerTiles[i + 1]) &&
+                this.playerTiles[i + 1].canFormChainWith(this.playerTiles[i + 2]) &&
+                this.playerTiles[i + 2].canFormChainWith(this.playerTiles[i + 3])) {
                 chainsOfFour++;
                 i += 3; 
             }
