@@ -29,51 +29,95 @@ public class OkeyGame {
         }
     }
 
-    /*
-     * TODO: distributes the starting tiles to the players
-     * player at index 0 gets 15 tiles and starts first
-     * other players get 14 tiles
-     * this method assumes the tiles are already shuffled
+   /*
+     * DONE: get the last discarded tile for the current player
+     * (this simulates picking up the tile discarded by the previous player)
+     * it should return the toString method of the tile so that we can print what we picked
      */
+    /** Resets lastDiscardedTile to null after picking.  Returns the tile as a string for display. */
     public void distributeTilesToPlayers() 
     {
+        // Check array is initialized
+        if (players == null || players.length < 4) 
         {
-            int index = 0;
-            for (int i = 0; i < 15; i++) 
+            System.out.println("Error: Players array is not initialized properly."); 
+            return;
+        }
+    
+        // Check if tiles array is initialized and has enough tiles
+        if (tiles == null || tiles.length < 112) 
+        {
+            System.out.println("Error: Tiles array is not initialized or has missing tiles."); 
+            return;
+        }
+    
+        // Ensure all players are initialized
+        for (int j = 0; j < players.length; j++) 
+        {
+            if (players[j] == null) 
             {
-                players[0].addTile(tiles[index]);
+                System.out.println("Error: Player at index " + j + " is not initialized."); 
+                return;
+            }
+        }
+    
+        int index = 0;  
+    
+        // First player gets 15 tiles
+        for (int i = 0; i < 15; i++) {
+            if (index >= tiles.length) // Check if there are enough tiles
+            { 
+                System.out.println("Error: Not enough tiles to distribute."); 
+                return;
+            }
+            players[0].addTile(tiles[index]);
+            index++;
+        }
+    
+        // Other players get 14 tiles 
+        for (int j = 1; j < players.length; j++) 
+        {
+            for (int i = 0; i < 14; i++) 
+            {
+                if (index >= tiles.length) // Check if there are enough tiles
+                { 
+                    System.out.println("Error: Not enough tiles to distribute."); 
+                    return;
+                }
+                players[j].addTile(tiles[index]);
                 index++;
             }
-            
-            for (int j = 1; j < players.length; j++) 
-            {
-                for (int i = 0; i < 14; i++) 
-                {
-                    players[j].addTile(tiles[index]);
-                    index++;
-                }
-            }
-            currentTileIndex = index;
         }
-
+    
+        currentTileIndex = index; 
     }
+ 
 
     /*
      * DONE: get the last discarded tile for the current player
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
+    /** Resets lastDiscardedTile to null after picking.  Returns the tile as a string for display. */
     public String getLastDiscardedTile() 
     {
+        if (lastDiscardedTile == null)  // Check if there is a discarded tile
+    {
+        return "No discarded tile to pick up.";
+    }
 
-            if (lastDiscardedTile != null) 
-            {
-                String tileString = lastDiscardedTile.toString();
- 
-                lastDiscardedTile = null; //clears memory each time when a tile picked by the player 
-                return tileString;
-            }
-            return ("No tile discarded yet.");
+    // Check if player's hand is full (should not exceed 15 tiles)
+    if (players[currentPlayerIndex].numberOfTiles >= 15) 
+    {
+        return "Cannot pick up: Hand is full.";
+    }
+
+
+        Tile tile = lastDiscardedTile;
+        players[currentPlayerIndex].addTile(tile);
+        lastDiscardedTile = null;
+        return tile.toString();
+
         }
 
  
