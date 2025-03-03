@@ -37,29 +37,25 @@ public class OkeyGame {
      * then it increments the currentTileIndex
      * then it returns the toString method of the picked tile so that we can print what we picked
      * @return the toString method of the picked tile
+     * updated by Utku
      */
-    public String getTopTile() 
-    {
-        if (currentTileIndex >= tiles.length) // Check if there are tiles left
-        {
-            System.out.println("Error: No more tiles in the stack.");
+    public String getTopTile() {
+        if (currentTileIndex >= tiles.length) { 
+            System.out.println("No more tiles in the stack. Skipping turn.");
             return "No more tiles to draw.";
         }
-
-        // Pick the top tile from the stack
+    
         Tile pickedTile = tiles[currentTileIndex];
         currentTileIndex++;
-
-        // Check if player's hand is full before adding the tile
-        if (players[currentPlayerIndex].getNumberOfTiles() >= 15) 
-        {
+    
+        if (players[currentPlayerIndex].getNumberOfTiles() >= 15) {
             System.out.println("Cannot pick up: Hand is full.");
             return "Cannot pick up: Hand is full.";
         }
-
+    
         players[currentPlayerIndex].addTile(pickedTile);
         System.out.println(players[currentPlayerIndex].getName() + " picked up " + pickedTile.toString());
-
+    
         return pickedTile.toString();
     }
 
@@ -172,11 +168,22 @@ public class OkeyGame {
     /*
      * Done by Ali: check if game still continues, should return true if current player
      * finished the game, use isWinningHand() method of Player to decide
+     * updated by Utku
      */
     public boolean didGameFinish() {
-        return players[currentPlayerIndex].isWinningHand();
+        boolean hasWinner = players[currentPlayerIndex].isWinningHand();
+        boolean noMoreMoves = (currentTileIndex >= tiles.length && lastDiscardedTile == null);
+    
+        if (hasWinner) {
+            System.out.println(players[currentPlayerIndex].getName() + " wins!");
+            return true;
+        } else if (noMoreMoves) {
+            System.out.println("No more tiles left! The game ends in a draw.");
+            return true;
+        }
+        return false;
     }
-
+    
     /**
      * Picks a tile for the current computer player considering the following rules:
      * - If the lastDiscardedTile is considered beneficial, computer player picks it using getLastDiscardedTile()
@@ -185,14 +192,21 @@ public class OkeyGame {
      * @author Mert Uzun
      */
     public void pickTileForComputer() {
+        if (currentTileIndex >= tiles.length && lastDiscardedTile == null) {
+            System.out.println("No valid moves left for " + players[currentPlayerIndex].getName());
+            return;
+        }
+    
         Player currentPlayer = players[currentPlayerIndex];
+        
         if (lastDiscardedTileIsBeneficial()) {
             getLastDiscardedTile();
-            System.out.println("Player " + (currentPlayerIndex + 1) + "takes the last discarded tile.");
-        }
-        else{
+            System.out.println("Player " + (currentPlayerIndex + 1) + " takes the last discarded tile.");
+        } else if (currentTileIndex < tiles.length) {
             getTopTile();
-            System.out.println("Player " + (currentPlayerIndex + 1) + "takes the top tile.");
+            System.out.println("Player " + (currentPlayerIndex + 1) + " takes the top tile.");
+        } else {
+            System.out.println("No moves left for " + currentPlayer.getName());
         }
     }
 
@@ -242,17 +256,22 @@ public class OkeyGame {
      * First looks for tiles with duplicates and if there is any, discards it.
      * Secondly, looks for a tile with minimum matchables, if there is a tile such as this, discards it.
      * @author Mert Uzun
+     * updated by Utku
      */
     public void discardTileForComputer() {
         int index = getCurrentPlayerIndex();
         Player currentPlayer = players[index];
         Tile[] handOfPlayer = currentPlayer.getTiles();
-
-        //First, look for duplicates, makes discarded index null
-        for(int i = 0; i < handOfPlayer.length; i++){
+    
+        // First, look for duplicates, makes discarded index null
+        for (int i = 0; i < handOfPlayer.length; i++) {
             Tile currentTile = handOfPlayer[i];
-            for(int j = i + 1; j < handOfPlayer.length; j++){
+            if (currentTile == null) continue; // Skip null tiles
+    
+            for (int j = i + 1; j < handOfPlayer.length; j++) {
                 Tile toBeCompared = handOfPlayer[j];
+                if (toBeCompared == null) continue; // Skip null tiles
+    
                 if (currentTile.equals(toBeCompared)) {
                     System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.\n");
                     handOfPlayer[i] = null;
@@ -261,20 +280,25 @@ public class OkeyGame {
                 }
             }
         }
-
-        //Secondly, look for tiles without minimum pairs
-        for(int x = 0; x < 4; x++){
-            for(int i = 0; i < handOfPlayer.length; i++){
+    
+        // Secondly, look for tiles with the fewest possible matches
+        for (int x = 0; x < 4; x++) {
+            for (int i = 0; i < handOfPlayer.length; i++) {
                 Tile currentTile = handOfPlayer[i];
-                int countForPairables = 0;
-                for(int j = 0; j < handOfPlayer.length; j++){
+                if (currentTile == null) continue; // Skip null tiles
+    
+                int countForPairables = 0; // Ensure this variable is initialized inside the loop
+    
+                for (int j = 0; j < handOfPlayer.length; j++) {
                     Tile toBeCompared = handOfPlayer[j];
+                    if (toBeCompared == null) continue; // Skip null tiles
+    
                     if (currentTile.canFormChainWith(toBeCompared)) {
                         countForPairables++;
                     }
                 }
     
-                //If current tile has minimum matches with any other, discard it
+                // If the current tile has the fewest matches, discard it
                 if (countForPairables == x) {
                     System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.\n");
                     handOfPlayer[i] = null;
@@ -289,23 +313,24 @@ public class OkeyGame {
      * Sorts the tiles array based on compareTo method in Tile class, in a way to put null at last index
      * @param tiles tiles array to be sorted
      * @author Mert Uzun
+     * updated by Utku
      */
-    public void sortTilesWithNullAtLastIndex(Tile[] tiles){
-        int nullIndex = -1;
-
-        for(int i = 0; i < tiles.length; i++){
-            if (tiles[i] == null) {
-                nullIndex = i;
-                break;
-            }
+    public void sortTilesWithNullAtLastIndex(Tile[] tiles) {
+        // Filter out null values before sorting
+        Tile[] nonNullTiles = Arrays.stream(tiles)
+                                    .filter(tile -> tile != null)
+                                    .toArray(Tile[]::new);
+    
+        // Sort the filtered array
+        Arrays.sort(nonNullTiles);
+    
+        // Copy back sorted tiles and keep nulls at the end
+        for (int i = 0; i < nonNullTiles.length; i++) {
+            tiles[i] = nonNullTiles[i];
         }
-
-        if (nullIndex != -1 && nullIndex != 14) {
-            tiles[nullIndex] = tiles[14];
-            tiles[14] = null;
+        for (int i = nonNullTiles.length; i < tiles.length; i++) {
+            tiles[i] = null;
         }
-
-        Arrays.sort(tiles, 0, 14);
     }
 
     /**

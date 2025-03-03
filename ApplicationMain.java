@@ -49,9 +49,39 @@ public class ApplicationMain {
                     // on first turn the starting player does not pick up new tile
                     System.out.println("1. Discard Tile");
                 }
-
+                
+                //updated by utku
                 System.out.print("Your choice: ");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Invalid input! Please enter a number.");
+                    sc.next(); // Discard invalid input
+                }
                 playerChoice = sc.nextInt();
+
+                // If it's the first turn, only allow "1"
+                if (firstTurn) {
+                    while (playerChoice != 1) {
+                        System.out.println("Invalid choice! On the first turn, you can only discard a tile.");
+                        System.out.print("Your choice: ");
+                        while (!sc.hasNextInt()) {
+                            System.out.println("Invalid input! Please enter a number.");
+                            sc.next(); // Discard invalid input
+                        }
+                        playerChoice = sc.nextInt();
+                    }
+                }
+                // Otherwise, allow both "1" (Pick from Tiles) and "2" (Pick from Discard)
+                else {
+                    while (playerChoice < 1 || playerChoice > 2) {
+                        System.out.println("Invalid choice! Please enter 1 or 2.");
+                        System.out.print("Your choice: ");
+                        while (!sc.hasNextInt()) {
+                            System.out.println("Invalid input! Please enter a number.");
+                            sc.next(); // Discard invalid input
+                        }
+                        playerChoice = sc.nextInt();
+                    }
+                }
 
                 // after the first turn we can pick up
                 if(!firstTurn) {

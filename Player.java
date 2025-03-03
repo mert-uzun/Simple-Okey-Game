@@ -60,13 +60,19 @@ public class Player {
      * if we have ...4-4-4-4-4... it should count the first four 4s as a chain and not the last 4. By the game logic the player 
      * should only have chains of length 4 since there cant be tiles of same color in the same chain. It returns chainsOfFour == 3 and not
      * chainsOfFour >= 3 since there cannot be more than 3 chains. If the player is winning there should be 3 chains of length 4 and 2 extra tiles
+     * updated by Utku
      */
-     public boolean isWinningHand() {
+    public boolean isWinningHand() {
         int chainsOfFour = 0;
-        Tile[] tilesCopy = this.playerTiles.clone();
+        
+        // Remove elements those are not null
+        Tile[] tilesCopy = Arrays.stream(this.playerTiles)
+                                 .filter(tile -> tile != null)
+                                 .toArray(Tile[]::new);
+        
         Arrays.sort(tilesCopy);
-
-        for (int i = 0; i < numberOfTiles - 3; i++) {
+    
+        for (int i = 0; i < tilesCopy.length - 3; i++) {
             if (tilesCopy[i].canFormChainWith(tilesCopy[i + 1]) &&
                 tilesCopy[i + 1].canFormChainWith(tilesCopy[i + 2]) &&
                 tilesCopy[i + 2].canFormChainWith(tilesCopy[i + 3])) {
@@ -74,9 +80,8 @@ public class Player {
                 i += 3; 
             }
         }
-
-        return chainsOfFour == 3; // the player can have 14 tiles at most. 3 chains of 4 tiles each = 12 tiles. 
-        //the player cannot have more than 3 chains of 4 tiles each. it is not necessary to check for extra tiles or extra chains
+    
+        return chainsOfFour == 3; 
     }
 
     public int findPositionOfTile(Tile t) {

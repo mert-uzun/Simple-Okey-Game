@@ -56,15 +56,12 @@ public class Tile implements Comparable {
 
     // determines if this tile can make a chain with the given tile
     public boolean canFormChainWith(Tile t) {
-
-        // can make chain if same number but different color
-        if(t.getColor() != color && t.getValue() == value) {
-            return true;
-        } else {
-            return false;
+        if (t == null) {
+            return false; // Prevent NullPointerException
         }
-
+        return t.getColor() != this.color && t.getValue() == this.value;
     }
+    
 
     @Override
     public String toString() {
@@ -76,10 +73,17 @@ public class Tile implements Comparable {
      * @param other other tile to be considered
      * @return true or false if these two tiles are equal or not
      * @author Mert Uzun
+     * updated by Utku
      */
-    public boolean equals(Tile other){
-        return this.toString().equals(other.toString());
+    @Override
+public boolean equals(Object obj) {
+    if (obj == null || !(obj instanceof Tile)) {
+        return false;
     }
+    Tile other = (Tile) obj;
+    return this.toString().equals(other.toString());
+}
+
 
     public int getValue() {
         return value;
