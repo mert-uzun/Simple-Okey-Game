@@ -50,7 +50,7 @@ public class OkeyGame {
         currentTileIndex++;
 
         // Check if player's hand is full before adding the tile
-        if (players[currentPlayerIndex].getTileCount() >= 15) 
+        if (players[currentPlayerIndex].getNumberOfTiles() >= 15) 
         {
             System.out.println("Cannot pick up: Hand is full.");
             return "Cannot pick up: Hand is full.";
