@@ -71,6 +71,12 @@ public class Tile implements Comparable {
         return "" + value + color;
     }
 
+    /**
+     * Looks for two tiles if they are equal or not, based on both color and number matchings
+     * @param other other tile to be considered
+     * @return true or false if these two tiles are equal or not
+     * @author Mert Uzun
+     */
     public boolean equals(Tile other){
         return this.toString().equals(other.toString());
     }
