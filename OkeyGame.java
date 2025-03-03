@@ -30,6 +30,37 @@ public class OkeyGame {
             }
         }
     }
+    /**
+     * This method first check if there's any more tiles left in the tiles arraylist
+     * then it picks the top tile from the tiles arraylist and adds it to the current player's hand
+     * then it increments the currentTileIndex
+     * then it returns the toString method of the picked tile so that we can print what we picked
+     * @return the toString method of the picked tile
+     */
+    public String getTopTile() 
+    {
+        if (currentTileIndex >= tiles.length) // Check if there are tiles left
+        {
+            System.out.println("Error: No more tiles in the stack.");
+            return "No more tiles to draw.";
+        }
+
+        // Pick the top tile from the stack
+        Tile pickedTile = tiles[currentTileIndex];
+        currentTileIndex++;
+
+        // Check if player's hand is full before adding the tile
+        if (players[currentPlayerIndex].getTileCount() >= 15) 
+        {
+            System.out.println("Cannot pick up: Hand is full.");
+            return "Cannot pick up: Hand is full.";
+        }
+
+        players[currentPlayerIndex].addTile(pickedTile);
+        System.out.println(players[currentPlayerIndex].getName() + " picked up " + pickedTile.toString());
+
+        return pickedTile.toString();
+    }
 
 
    /*
@@ -270,22 +301,24 @@ public class OkeyGame {
         Arrays.sort(tiles, 0, 14);
     }
 
-    /*
-     * TODO: get the top tile from tiles array for the current player
-     * that tile is no longer in the tiles array (this simulates picking up the top tile)
-     * it should return the toString method of the tile so that we can print what we picked
-     */
-    public String getTopTile() {
-        return null;
-    }
+    /**
+     * This method first checks the validity of the index range then
+     * removes the tile from the current player's hand and sets it as the last discarded tile
+     * then prints the name of the player and the tile that is discarded
+     * @param tileIndex the index of the tile to be discarded
+    public void discardTile(int tileIndex) 
+    {
+        // Validate index range
+        if (tileIndex < 0 || tileIndex >= players[currentPlayerIndex].getTileCount()) 
+        {
+            System.out.println("Invalid tile index. Must be between 0 and " + (players[currentPlayerIndex].getTileCount() - 1));
+            return;
+        }
 
-    /*
-     * TODO: discards the current player's tile at given index
-     * this should set lastDiscardedTile variable and remove that tile from
-     * that player's tiles
-     */
-    public void discardTile(int tileIndex) {
+        // Remove the tile and set it as last discarded tile
+        lastDiscardedTile = players[currentPlayerIndex].getAndRemoveTile(tileIndex);
         
+        System.out.println(players[currentPlayerIndex].getName() + " discarded " + lastDiscardedTile.toString());
     }
 
     public void displayDiscardInformation() {
