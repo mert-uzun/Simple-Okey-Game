@@ -209,14 +209,20 @@ public class OkeyGame {
         Player currentPlayer = players[currentPlayerIndex];
 
         for(int i = 0; i < currentPlayer.getNumberOfTiles(); i++){
-            if (lastDiscardedTile.equals(currentPlayer.getTiles()[i])) {
+            if (currentPlayer.getTiles()[i] == null) {
+                continue;
+            }
+            else if (lastDiscardedTile.equals(currentPlayer.getTiles()[i])) {
                 hasDuplicate = true;
             }
         }
 
         if (!hasDuplicate) {
             for(int i = 0; i < currentPlayer.getNumberOfTiles(); i++){
-                if (lastDiscardedTile.canFormChainWith(currentPlayer.getTiles()[i])) {
+                if (currentPlayer.getTiles()[i] == null) {
+                    continue;
+                }
+                else if (lastDiscardedTile.canFormChainWith(currentPlayer.getTiles()[i])) {
                     countForPossibleMatches++;
                 }
             }
