@@ -95,6 +95,30 @@ public class Player {
     }
 
     /**
+     * Counts the number of pairs in a player's hand.
+     * A pair is four tiles with the same value but different colors.
+     * @author Mert Uzun
+     */
+    public int countPairs() {
+        int pairs = 0;
+        int[] colorCount = new int[8]; // Since values are in range [1,7], index 0 is unused.
+
+        // Count occurrences of each value
+        for (int i = 0; i < numberOfTiles; i++) {
+            if (playerTiles[i] != null) {
+                colorCount[playerTiles[i].getValue()]++;
+            }
+        }
+
+        // Count valid pairs
+        for (int i = 1; i <= 7; i++) {
+            pairs += colorCount[i] / 4;
+        }
+
+        return pairs;
+    }
+
+    /**
      * Display players current hand with the indexes on top and each tile at the bottom,
      * @author Elif Bozkurt, Mert Uzun
      */

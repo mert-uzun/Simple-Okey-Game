@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class OkeyGame {
@@ -37,7 +39,7 @@ public class OkeyGame {
      * then it increments the currentTileIndex
      * then it returns the toString method of the picked tile so that we can print what we picked
      * @return the toString method of the picked tile
-     * updated by Utku
+     * @author Sıla Bozkurt, Utku Kabukçu
      */
     public String getTopTile() {
         if (currentTileIndex >= tiles.length) { 
@@ -65,7 +67,11 @@ public class OkeyGame {
      * (this simulates picking up the tile discarded by the previous player)
      * it should return the toString method of the tile so that we can print what we picked
      */
-    /** Resets lastDiscardedTile to null after picking.  Returns the tile as a string for display. */
+    /** 
+     * Resets lastDiscardedTile to null after picking. 
+     * Returns the tile as a string for display. 
+     * @author Utku Kabukçu
+     */
     public void distributeTilesToPlayers() 
     {
         // Check array is initialized
@@ -165,24 +171,66 @@ public class OkeyGame {
         }
     }
 
-    /*
-     * Done by Ali: check if game still continues, should return true if current player
-     * finished the game, use isWinningHand() method of Player to decide
-     * updated by Utku
+    /**
+     * Checks if the game still continues, returns true if current player finished the game
+     * uses isWinningHand() method in Player class to decide the winner if one of players has a winning hand
+     * uses declareWinnerByPairs() method to determine the winner if there are no more tiles left to pick
+     * @author Ali Sevindi, Mert Uzun, Utku Kabukçu
      */
     public boolean didGameFinish() {
         boolean hasWinner = players[currentPlayerIndex].isWinningHand();
-        boolean noMoreMoves = (currentTileIndex >= tiles.length && lastDiscardedTile == null);
-    
+        boolean noMoreMoves = (currentTileIndex >= tiles.length);
+
         if (hasWinner) {
             System.out.println(players[currentPlayerIndex].getName() + " wins!");
             return true;
         } else if (noMoreMoves) {
-            System.out.println("No more tiles left! The game ends in a draw.");
+            System.out.println("No more tiles left! Determining winner based on most pairs...");
+            declareWinnerByPairs();
             return true;
         }
         return false;
     }
+
+    /**
+     * A helper method
+     * Declares the winner based on the pair numbers when the game ends due to no tiles left.
+     * @author Mert Uzun
+     */
+    private void declareWinnerByPairs() {
+        int maxPairs = -1;
+        List<Player> winners = new ArrayList<>();
+
+        // Determine players with the max pairs
+        for (Player player : players) {
+            int pairs = player.countPairs();
+            System.out.println(player.getName() + " has " + pairs + " pairs.");
+
+            if (pairs > maxPairs) {
+                maxPairs = pairs;
+                winners.clear();  // Clears previous list finding the new highest
+                winners.add(player);
+            } 
+            else if (pairs == maxPairs) {
+                winners.add(player);  // Declare multiple winners in case of equalities in pair numbers
+            }
+        }
+
+        // Announce the results
+        if (winners.size() == 1) {
+            System.out.println("The winner based on pairs is: " + winners.get(0).getName() + " with " + maxPairs + " pairs!");
+        } 
+        else if (maxPairs > 0) {
+            System.out.println("It's a tie! The following players have " + maxPairs + " pairs:");
+            for (Player winner : winners) {
+                System.out.println("- " + winner.getName());
+            }
+        }
+        else {
+            System.out.println("No valid pairs found. The game ends in a complete tie.");
+        }
+    }
+
     
     /**
      * Picks a tile for the current computer player considering the following rules:
