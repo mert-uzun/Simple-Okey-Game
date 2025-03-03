@@ -30,6 +30,7 @@ public class OkeyGame {
             }
         }
     }
+    
     /**
      * This method first check if there's any more tiles left in the tiles arraylist
      * then it picks the top tile from the tiles arraylist and adds it to the current player's hand
@@ -306,12 +307,13 @@ public class OkeyGame {
      * removes the tile from the current player's hand and sets it as the last discarded tile
      * then prints the name of the player and the tile that is discarded
      * @param tileIndex the index of the tile to be discarded
+     */
     public void discardTile(int tileIndex) 
     {
         // Validate index range
-        if (tileIndex < 0 || tileIndex >= players[currentPlayerIndex].getTileCount()) 
+        if (tileIndex < 0 || tileIndex >= players[currentPlayerIndex].getNumberOfTiles()) 
         {
-            System.out.println("Invalid tile index. Must be between 0 and " + (players[currentPlayerIndex].getTileCount() - 1));
+            System.out.println("Invalid tile index. Must be between 0 and " + (players[currentPlayerIndex].getNumberOfTiles() - 1));
             return;
         }
 
