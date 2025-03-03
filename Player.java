@@ -12,8 +12,8 @@ public class Player {
         numberOfTiles = 0; // currently this player owns 0 tiles, will pick tiles at the beggining of the game
     }
 
-    /*
-     * DONE: removes the tile in the given index by making all elements greater than the given index move 1 index to the left
+    /**
+     * Removes the tile in the given index by making all elements greater than the given index move 1 index to the left
      */
     public Tile getAndRemoveTile(int index) {
         Tile tile = playerTiles[index];
@@ -28,10 +28,11 @@ public class Player {
         return null;
     }
 
-    /*
-     * DONE by Elif and Ali, debugged by Mert: adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
-     * the method finds the index the tile should be inserted without sorting the array. 
-     * it finds the index it should be inserted to and shifts all elements greater than the index to the right by 1
+    /**
+     * Adds the given tile to the array of tiles kept in the player class and increments numberOfTiles by 1.
+     * Finds the index the tile should be inserted without sorting the array. 
+     * Finds the index it should be inserted to and shifts all elements greater than the index to the right by 1
+     * @author Elif Bozkurt, Ali Sevindi, Mert Uzun
      */
     public void addTile(Tile t) {
         if (this.numberOfTiles >= 15) return; //if the player has 15 or more tiles return
@@ -55,7 +56,6 @@ public class Player {
     
 
     /*
-     * CHECK THIS METHOD AGAIN
      * DONE: This method works for chains of length 4 as after sorting the array it only checks the 3 tiles after that tile
      * if we have ...4-4-4-4-4... it should count the first four 4s as a chain and not the last 4. By the game logic the player 
      * should only have chains of length 4 since there cant be tiles of same color in the same chain. It returns chainsOfFour == 3 and not

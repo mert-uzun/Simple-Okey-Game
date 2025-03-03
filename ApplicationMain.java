@@ -19,7 +19,7 @@ public class ApplicationMain {
         game.distributeTilesToPlayers();
         game.distributeTilesToPlayers();
         
-        // developer mode is used for seeing the computer players hands, to be used for debugging
+        // Developer mode is used for seeing the computer players hands, to be used for debugging
         System.out.print("Play in developer's mode with other player's tiles visible? (Y/N): ");
         char devMode = sc.next().charAt(0);
         boolean devModeOn = devMode == 'Y';
@@ -34,23 +34,23 @@ public class ApplicationMain {
             System.out.println(game.getCurrentPlayerName() + "'s turn.");
             
             if(currentPlayer == 0) {
-                // this is the human player's turn
+                // This is the human player's turn
                 game.displayCurrentPlayersTiles();
                 game.displayDiscardInformation();
 
                 System.out.println("What will you do?");
 
                 if(!firstTurn) {
-                    // after the first turn, player may pick from tile stack or last player's discard
+                    // After the first turn, player may pick from tile stack or last player's discard
                     System.out.println("1. Pick From Tiles");
                     System.out.println("2. Pick From Discard");
                 }
                 else{
-                    // on first turn the starting player does not pick up new tile
+                    // On first turn the starting player does not pick up new tile
                     System.out.println("1. Discard Tile");
                 }
                 
-                //updated by utku
+                // Below lines are updated by Utku Kabukçu to improve game logic
                 System.out.print("Your choice: ");
                 while (!sc.hasNextInt()) {
                     System.out.println("Invalid input! Please enter a number.");
@@ -83,7 +83,7 @@ public class ApplicationMain {
                     }
                 }
 
-                // after the first turn we can pick up
+                // After the first turn we can pick up
                 if(!firstTurn) {
                     if(playerChoice == 1) {
                         System.out.println("You picked up: " + game.getTopTile());
@@ -93,18 +93,18 @@ public class ApplicationMain {
                         System.out.println("You picked up: " + game.getLastDiscardedTile()); 
                     }
 
-                    // display the hand after picking up new tile
+                    // Display the hand after picking up new tile
                     game.displayCurrentPlayersTiles();
                 }
                 else{
-                    // after first turn it is no longer the first turn
+                    // After first turn it is no longer the first turn
                     firstTurn = false;
                 }
 
                 gameContinues = !game.didGameFinish();
 
                 if(gameContinues) {
-                    // if game continues we need to discard a tile using the given index by the player
+                    // If game continues we need to discard a tile using the given index by the player
                     System.out.println("Which tile you will discard?");
 
                     // Done by Ali: make sure the given index is correct, should be 0 <= index <= 14
@@ -125,28 +125,28 @@ public class ApplicationMain {
                     game.passTurnToNextPlayer();
                 }
                 else{
-                    // if we finish the hand we win
+                    // If we finish the hand we win
                     System.out.println("Congratulations, you win!");
                 }
             }
             else{
-                // this is the computer player's turn
+                // This is the computer player's turn
                 if(devModeOn) {
                     game.displayCurrentPlayersTiles();
                 }
 
-                // computer picks a tile from tile stack or other player's discard
+                // Computer picks a tile from tile stack or other player's discard
                 game.pickTileForComputer();
 
                 gameContinues = !game.didGameFinish();
 
                 if(gameContinues) {
-                    // if game did not end computer should discard
+                    // If game did not end computer should discard
                     game.discardTileForComputer();
                     game.passTurnToNextPlayer();
                 }
                 else{
-                    // current computer character wins
+                    // Current computer character wins
                     System.out.println(game.getCurrentPlayerName() + " wins.");
                 }
             }

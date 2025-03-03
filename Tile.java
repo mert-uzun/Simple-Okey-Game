@@ -70,19 +70,19 @@ public class Tile implements Comparable {
 
     /**
      * Looks for two tiles if they are equal or not, based on both color and number matchings
+     * Handles the null exception
      * @param other other tile to be considered
      * @return true or false if these two tiles are equal or not
-     * @author Mert Uzun
-     * updated by Utku
+     * @author Mert Uzun, Utku Kabukçu
      */
     @Override
-public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof Tile)) {
-        return false;
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Tile)) {
+            return false;
+        }
+        Tile other = (Tile) obj;
+        return this.toString().equals(other.toString());
     }
-    Tile other = (Tile) obj;
-    return this.toString().equals(other.toString());
-}
 
 
     public int getValue() {
