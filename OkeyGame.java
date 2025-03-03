@@ -248,7 +248,7 @@ public class OkeyGame {
             for(int j = i + 1; j < handOfPlayer.length; j++){
                 Tile toBeCompared = handOfPlayer[j];
                 if (currentTile.equals(toBeCompared)) {
-                    System.out.println(currentPlayer + " discards " + currentTile + " from its hand.");
+                    System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.");
                     handOfPlayer[i] = null;
                     sortTilesWithNullAtLastIndex(handOfPlayer);
                     return;
@@ -270,7 +270,7 @@ public class OkeyGame {
     
                 //If current tile has minimum matches with any other, discard it
                 if (countForPairables == x) {
-                    System.out.println(currentPlayer + " discards " + currentTile + " from its hand.");
+                    System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.");
                     handOfPlayer[i] = null;
                     sortTilesWithNullAtLastIndex(handOfPlayer);
                     return;
