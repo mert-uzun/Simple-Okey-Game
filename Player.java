@@ -88,8 +88,12 @@ public class Player {
         return tilePosition;
     }
 
-    public void displayTiles() {
+     public void displayTiles() {
         System.out.println(playerName + "'s Tiles:");
+        for (int i = 0; i < numberOfTiles; i++) {
+            System.out.printf("%-3d",i);
+        }
+        System.out.println();
         for (int i = 0; i < numberOfTiles; i++) {
             System.out.print(playerTiles[i].toString() + " ");
         }
