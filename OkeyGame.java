@@ -4,6 +4,7 @@ import java.util.Random;
 public class OkeyGame {
 
     Player[] players;
+    
     Tile[] tiles;
 
     Tile lastDiscardedTile;
@@ -144,15 +145,57 @@ public class OkeyGame {
         return players[currentPlayerIndex].isWinningHand();
     }
 
-    /*
-     * TODO: Pick a tile for the current computer player using one of the following:
-     * - picking from the tiles array using getTopTile()
-     * - picking from the lastDiscardedTile using getLastDiscardedTile()
-     * You should consider if the discarded tile is useful for the computer in
-     * the current status. Print whether computer picks from tiles or discarded ones.
+    /**
+     * Picks a tile for the current computer player considering the following rules:
+     * - If the lastDiscardedTile is considered beneficial, computer player picks it using getLastDiscardedTile()
+     * - If the lastDiscardedTile is considered non-beneficial, computer player picks the top tile using getTopTile()
+     * Prints whether computer picks from tiles or discarded ones.
+     * @author Mert Uzun
      */
     public void pickTileForComputer() {
+        Player currentPlayer = players[currentPlayerIndex];
+        if (lastDiscardedTileIsBeneficial()) {
+            getLastDiscardedTile();
+            System.out.println("Player " + (currentPlayerIndex + 1) + "takes the last discarded tile.");
+        }
+        else{
+            getTopTile();
+            System.out.println("Player " + (currentPlayerIndex + 1) + "takes the top tile.");
+        }
+    }
 
+    /**
+     * Helper method to check if picking last discarded tile would be beneficial
+     * Method considers this process beneficial if last discarded tile can match with 2 or more tiles in players current hand
+     * Considers it non-beneficial if last discarded tiles is duplicate of one of tiles in players hand or only has one possible match
+     * @return true if beneficial, false if not
+     * @author Mert Uzun
+     */
+    private boolean lastDiscardedTileIsBeneficial(){
+        int countForPossibleMatches = 0;
+        boolean hasDuplicate = false;
+        Player currentPlayer = players[currentPlayerIndex];
+
+        for(int i = 0; i < currentPlayer.getNumberOfTiles(); i++){
+            if (lastDiscardedTile.equals(currentPlayer.getTiles()[i])) {
+                hasDuplicate = true;
+            }
+        }
+
+        if (!hasDuplicate) {
+            for(int i = 0; i < currentPlayer.getNumberOfTiles(); i++){
+                if (lastDiscardedTile.canFormChainWith(currentPlayer.getTiles()[i])) {
+                    countForPossibleMatches++;
+                }
+            }
+        }
+
+        if (hasDuplicate || countForPossibleMatches < 2) {
+            return false;
+        }
+        else {
+            return true;
+        }  
     }
 
     /**
@@ -160,9 +203,9 @@ public class OkeyGame {
      * Prints what tile is discarded to make other players aware of this action.
      * First looks for tiles with duplicates and if there is any, discards it.
      * Secondly, looks for a tile with minimum matchables, if there is a tile such as this, discards it.
+     * @author Mert Uzun
      */
     public void discardTileForComputer() {
-        Random random = new Random();
         int index = getCurrentPlayerIndex();
         Player currentPlayer = players[index];
         Tile[] handOfPlayer = currentPlayer.getTiles();
@@ -207,6 +250,7 @@ public class OkeyGame {
     /**
      * Sorts the tiles array based on compareTo method in Tile class, in a way to put null at last index
      * @param tiles tiles array to be sorted
+     * @author Mert Uzun
      */
     public void sortTilesWithNullAtLastIndex(Tile[] tiles){
         int nullIndex = -1;
@@ -224,6 +268,15 @@ public class OkeyGame {
         }
 
         Arrays.sort(tiles, 0, 14);
+    }
+
+    /*
+     * TODO: get the top tile from tiles array for the current player
+     * that tile is no longer in the tiles array (this simulates picking up the top tile)
+     * it should return the toString method of the tile so that we can print what we picked
+     */
+    public String getTopTile() {
+        return null;
     }
 
     /*
