@@ -80,7 +80,9 @@ public class Tile implements Comparable {
         if (obj == null || !(obj instanceof Tile)) {
             return false;
         }
+
         Tile other = (Tile) obj;
+        
         return this.toString().equals(other.toString());
     }
 

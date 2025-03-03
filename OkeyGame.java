@@ -62,11 +62,6 @@ public class OkeyGame {
     }
 
 
-   /*
-     * DONE: get the last discarded tile for the current player
-     * (this simulates picking up the tile discarded by the previous player)
-     * it should return the toString method of the tile so that we can print what we picked
-     */
     /** 
      * Resets lastDiscardedTile to null after picking. 
      * Returns the tile as a string for display. 
@@ -184,11 +179,13 @@ public class OkeyGame {
         if (hasWinner) {
             System.out.println(players[currentPlayerIndex].getName() + " wins!");
             return true;
-        } else if (noMoreMoves) {
+        } 
+        else if (noMoreMoves) {
             System.out.println("No more tiles left! Determining winner based on most pairs...");
             declareWinnerByPairs();
             return true;
         }
+
         return false;
     }
 
@@ -222,6 +219,7 @@ public class OkeyGame {
         } 
         else if (maxPairs > 0) {
             System.out.println("It's a tie! The following players have " + maxPairs + " pairs:");
+
             for (Player winner : winners) {
                 System.out.println("- " + winner.getName());
             }
@@ -250,10 +248,12 @@ public class OkeyGame {
         if (lastDiscardedTileIsBeneficial()) {
             getLastDiscardedTile();
             System.out.println("Player " + (currentPlayerIndex + 1) + " takes the last discarded tile.");
-        } else if (currentTileIndex < tiles.length) {
+        } 
+        else if (currentTileIndex < tiles.length) {
             getTopTile();
             System.out.println("Player " + (currentPlayerIndex + 1) + " takes the top tile.");
-        } else {
+        } 
+        else {
             System.out.println("No moves left for " + currentPlayer.getName());
         }
     }
@@ -304,7 +304,6 @@ public class OkeyGame {
      * First looks for tiles with duplicates and if there is any, discards it.
      * Secondly, looks for a tile with minimum matchables, if there is a tile such as this, discards it.
      * @author Mert Uzun
-     * updated by Utku
      */
     public void discardTileForComputer() {
         int index = getCurrentPlayerIndex();
@@ -314,11 +313,17 @@ public class OkeyGame {
         // First, look for duplicates, makes discarded index null
         for (int i = 0; i < handOfPlayer.length; i++) {
             Tile currentTile = handOfPlayer[i];
-            if (currentTile == null) continue; // Skip null tiles
+            if (currentTile == null){
+                continue;
+            }
     
             for (int j = i + 1; j < handOfPlayer.length; j++) {
                 Tile toBeCompared = handOfPlayer[j];
-                if (toBeCompared == null) continue; // Skip null tiles
+
+                if (toBeCompared == null) {
+                    continue;
+                }
+                
     
                 if (currentTile.equals(toBeCompared)) {
                     System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.\n");
@@ -333,20 +338,25 @@ public class OkeyGame {
         for (int x = 0; x < 4; x++) {
             for (int i = 0; i < handOfPlayer.length; i++) {
                 Tile currentTile = handOfPlayer[i];
-                if (currentTile == null) continue; // Skip null tiles
-    
-                int countForPairables = 0; // Ensure this variable is initialized inside the loop
+               
+                if (currentTile == null) {
+                    continue;
+                }
+
+                int countForPairables = 0;
     
                 for (int j = 0; j < handOfPlayer.length; j++) {
                     Tile toBeCompared = handOfPlayer[j];
-                    if (toBeCompared == null) continue; // Skip null tiles
-    
+                    if (toBeCompared == null) {
+                        continue;
+                    }
+
                     if (currentTile.canFormChainWith(toBeCompared)) {
                         countForPairables++;
                     }
                 }
     
-                // If the current tile has the fewest matches, discard it
+                // Discards the tile with lowest matchables
                 if (countForPairables == x) {
                     System.out.println(currentPlayer.getName() + " discards " + currentTile + " from its hand.\n");
                     handOfPlayer[i] = null;
@@ -360,22 +370,17 @@ public class OkeyGame {
     /**
      * Sorts the tiles array based on compareTo method in Tile class, in a way to put null at last index
      * @param tiles tiles array to be sorted
-     * @author Mert Uzun
-     * updated by Utku
+     * @author Mert Uzun, Utku Kabukçu
      */
-    public void sortTilesWithNullAtLastIndex(Tile[] tiles) {
-        // Filter out null values before sorting
-        Tile[] nonNullTiles = Arrays.stream(tiles)
-                                    .filter(tile -> tile != null)
-                                    .toArray(Tile[]::new);
+    private void sortTilesWithNullAtLastIndex(Tile[] tiles) {
+        Tile[] nonNullTiles = Arrays.stream(tiles).filter(tile -> tile != null).toArray(Tile[]::new);
     
-        // Sort the filtered array
         Arrays.sort(nonNullTiles);
-    
-        // Copy back sorted tiles and keep nulls at the end
+
         for (int i = 0; i < nonNullTiles.length; i++) {
             tiles[i] = nonNullTiles[i];
         }
+
         for (int i = nonNullTiles.length; i < tiles.length; i++) {
             tiles[i] = null;
         }
@@ -386,6 +391,7 @@ public class OkeyGame {
      * removes the tile from the current player's hand and sets it as the last discarded tile
      * then prints the name of the player and the tile that is discarded
      * @param tileIndex the index of the tile to be discarded
+     * @author Sıla Bozkurt
      */
     public void discardTile(int tileIndex) 
     {

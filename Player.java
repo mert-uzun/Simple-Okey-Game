@@ -45,6 +45,7 @@ public class Player {
                     break;
                 }
             }
+
             for (int j = this.numberOfTiles ; j > index; j--) {
                 playerTiles[j] = playerTiles[j - 1];
             }
@@ -55,20 +56,18 @@ public class Player {
     }
     
 
-    /*
+    /**
      * DONE: This method works for chains of length 4 as after sorting the array it only checks the 3 tiles after that tile
      * if we have ...4-4-4-4-4... it should count the first four 4s as a chain and not the last 4. By the game logic the player 
      * should only have chains of length 4 since there cant be tiles of same color in the same chain. It returns chainsOfFour == 3 and not
      * chainsOfFour >= 3 since there cannot be more than 3 chains. If the player is winning there should be 3 chains of length 4 and 2 extra tiles
-     * updated by Utku
+     * @author Elif Bozkurt, Utku Kabukçu
      */
     public boolean isWinningHand() {
         int chainsOfFour = 0;
         
         // Remove elements those are not null
-        Tile[] tilesCopy = Arrays.stream(this.playerTiles)
-                                 .filter(tile -> tile != null)
-                                 .toArray(Tile[]::new);
+        Tile[] tilesCopy = Arrays.stream(this.playerTiles).filter(tile -> tile != null).toArray(Tile[]::new);
         
         Arrays.sort(tilesCopy);
     
