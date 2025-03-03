@@ -1,3 +1,4 @@
+import java.net.SocketImplFactory;
 import java.util.Arrays;
 
 public class Player {
@@ -88,14 +89,30 @@ public class Player {
         return tilePosition;
     }
 
-     public void displayTiles() {
+    /**
+     * Display players current hand with the indexes on top and each tile at the bottom,
+     * @author Elif Bozkurt, Mert Uzun
+     */
+    public void displayTiles() {
         System.out.println(playerName + "'s Tiles:");
         for (int i = 0; i < numberOfTiles; i++) {
-            System.out.printf("%-3d",i);
+            if(playerTiles[i] == null){
+                continue;
+            }
+            else{
+                System.out.printf("%-3d",i);
+            }
         }
+
         System.out.println();
+
         for (int i = 0; i < numberOfTiles; i++) {
-            System.out.print(playerTiles[i].toString() + " ");
+            if (playerTiles[i] == null) {
+                continue;
+            }
+            else{
+                System.out.print(playerTiles[i].toString() + " ");
+            }
         }
         System.out.println();
     }
